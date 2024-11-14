@@ -11,6 +11,8 @@ import OnBoarding3 from "./screens/OnBoarding3";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
+import Forgot from "./screens/Forgot";
+import OTPVerification from "./screens/OTPVerification";
 
 const Stack = createStackNavigator();
 export default function App() {
@@ -56,6 +58,16 @@ export default function App() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
+          options={{ ...TransitionPresets.ModalPresentationIOS }}
+        />
+        <Stack.Screen
+          name="Forgot"
+          component={Forgot}
+          options={{ ...TransitionPresets.ModalPresentationIOS }}
+        />
+        <Stack.Screen
+          name="OTPVerification"
+          component={OTPVerification}
           options={{ ...TransitionPresets.ModalPresentationIOS }}
         />
       </Stack.Navigator>
