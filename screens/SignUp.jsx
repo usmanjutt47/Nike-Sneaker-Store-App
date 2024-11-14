@@ -14,8 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 export default function SignUp() {
   const [visible, setVisible] = useState(null);
   const navigation = useNavigation();
+  
   const handleSignUp = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate("Login");
   };
   return (
     <SafeAreaView style={styles.container}>
