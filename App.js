@@ -33,6 +33,7 @@ export default function App() {
         screenOptions={{
           headerShown: false,
         }}
+        initialRouteName="Home"
       >
         <Stack.Screen
           name="OnBoarding"
