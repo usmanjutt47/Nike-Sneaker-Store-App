@@ -20,6 +20,9 @@ export default function Login() {
   const handleForgot = () => {
     navigation.navigate("Forgot");
   };
+  const handleHome = () => {
+    navigation.navigate("Home");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.innerContainer}>
@@ -54,7 +57,7 @@ export default function Login() {
           <Text style={styles.forgotPassword}>Recovery Password</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleHome}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
