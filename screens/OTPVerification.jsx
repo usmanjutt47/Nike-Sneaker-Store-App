@@ -5,13 +5,39 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Forgot() {
   const navigation = useNavigation();
+  const [seconds, setSeconds] = useState(30);
+  const [isTimerActive, setIsTimerActive] = useState(true);
+
+  useEffect(() => {
+    let timer;
+    if (isTimerActive && seconds > 0) {
+      timer = setInterval(() => {
+        setSeconds((prev) => prev - 1);
+      }, 1000);
+    } else if (seconds === 0) {
+      setIsTimerActive(false);
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [isTimerActive, seconds]);
+
+  const handleResendCode = () => {
+    setSeconds(30);
+    setIsTimerActive(true);
+  };
+
+  const handleNavigate = () => {
+    navigation.navigate("Login");
+  };
+
+  const formattedTime = `00:${seconds < 10 ? `0${seconds}` : seconds}`;
 
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -110,6 +136,18 @@ export default function Forgot() {
             cursorColor={"#000"}
           />
         </View>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={handleNavigate}
+        >
+          <Text style={styles.buttonText}>Verify</Text>
+        </TouchableOpacity>
+        <View style={styles.timerContainer}>
+          <TouchableOpacity onPress={handleResendCode}>
+            <Text style={styles.resendOneText}>Resend code to</Text>
+          </TouchableOpacity>
+          <Text style={styles.resendOneText}> {formattedTime} </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -169,5 +207,31 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  buttonContainer: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#0D6EFD",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "10%",
+    marginBottom: "5%",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontFamily: "Raleway-SemiBold",
+    textTransform: "capitalize",
+  },
+  timerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  resendOneText: {
+    color: "#7D848D",
+    fontSize: 12,
+    fontFamily: "Raleway-SemiBold",
   },
 });
