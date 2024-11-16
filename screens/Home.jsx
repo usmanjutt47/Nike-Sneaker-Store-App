@@ -9,11 +9,14 @@ import {
   Text,
   FlatList,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import AntDesign from "@expo/vector-icons/AntDesign";
+
+const screenWidth = Dimensions.get("window").width;
 
 const DATA = [
   { id: "1", text: "All Shoes" },
@@ -32,7 +35,18 @@ const IMAGEDATA = [
 
 const renderImageItem = ({ item }) => (
   <View style={styles.scrollImageContainer}>
-    <Image source={item.imageUrl} style={styles.scrollImage} />
+    <Pressable
+      style={{
+        backgroundColor: "#fff",
+        elevation: 2,
+        width: "85%",
+        borderRadius: 14,
+        marginBottom: 10,
+        marginRight: 10,
+      }}
+    >
+      <Image source={item.imageUrl} style={styles.scrollImage} />
+    </Pressable>
   </View>
 );
 
@@ -42,24 +56,9 @@ const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = prevIndex + 1 >= IMAGEDATA.length ? 0 : prevIndex + 1;
-        flatListRef.current?.scrollToIndex({
-          index: nextIndex,
-          animated: true,
-        });
-        return nextIndex;
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const handleScroll = (event) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.floor(contentOffsetX / styles.scrollImage.width);
+    const index = Math.round(contentOffsetX / screenWidth);
     setCurrentIndex(index);
   };
 
@@ -208,9 +207,13 @@ const Home = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.flatListContainer}
+              contentContainerStyle={{
+                alignItems: "center",
+                alignSelf: "center",
+              }}
               ref={flatListRef}
               onScroll={handleScroll}
+              scrollEventThrottle={16}
             />
           </View>
           <View style={styles.indicatorContainer}>
@@ -400,17 +403,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   flatListContainer: {
-    paddingHorizontal: 10,
+    alignItems: "center",
   },
   scrollImageContainer: {
-    marginRight: 15,
+    width: screenWidth, // Match screen width for centering
+    justifyContent: "center", // Centers the image
+    alignItems: "center",
   },
   scrollImage: {
-    width: 350,
+    width: screenWidth * 0.6, // Adjust image size
     height: 200,
-    borderRadius: 10,
+    borderRadius: 14,
     resizeMode: "contain",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
   },
   indicatorContainer: {
     flexDirection: "row",
