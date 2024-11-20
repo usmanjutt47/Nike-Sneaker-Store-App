@@ -207,10 +207,6 @@ const Home = () => {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{
-                alignItems: "center",
-                alignSelf: "center",
-              }}
               ref={flatListRef}
               onScroll={handleScroll}
               scrollEventThrottle={16}
